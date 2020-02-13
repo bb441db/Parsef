@@ -1,13 +1,9 @@
 package com.github.bb441db
 
-import java.io.File
-import java.io.OutputStream
-import java.io.PrintStream
-import java.lang.Appendable
-import java.nio.charset.Charset
 import java.util.*
 
 class PrintfParser(private val formatter: Formatter = Formatter()) {
+    /*
     constructor(appendable: Appendable) : this(Formatter(appendable))
     constructor(locale: Locale) : this(Formatter(locale))
     constructor(appendable: Appendable, locale: Locale) : this(Formatter(appendable, locale))
@@ -22,6 +18,7 @@ class PrintfParser(private val formatter: Formatter = Formatter()) {
     constructor(os: OutputStream) : this(Formatter(os))
     constructor(os: OutputStream, csn: String) : this(Formatter(os, csn))
     constructor(os: OutputStream, csn: String, locale: Locale) : this(Formatter(os, csn, locale))
+    */
 
     fun parse(value: String): List<FormatString> {
         val rawValues = parseDelegate.invoke(formatter, value) as? Collection<*> ?: throw Exception("Expecting collection")

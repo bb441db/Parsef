@@ -1,6 +1,7 @@
 package com.github.bb441db
 
 import java.lang.reflect.Field
+import java.lang.reflect.Modifier
 import kotlin.reflect.KProperty
 
 internal class ReflectionFieldDelegate<T: Any>(private val target: Any, private val name: String, private val type: Class<T>) {
@@ -8,18 +9,23 @@ internal class ReflectionFieldDelegate<T: Any>(private val target: Any, private 
         target::class.java.getDeclaredField(name).apply { isAccessible = true }
     }
 
-    operator fun getValue(t: Any, property: KProperty<*>): T {
-        return field.get(target, type)
+    private val finalValue by lazy {
+        field.get(target, type)
     }
 
+    operator fun getValue(t: Any, property: KProperty<*>): T {
+        return if (field.isFinal) { // final fields only
+            finalValue
+        } else field.get(target, type)
+    }
+
+    private val Field.isFinal: Boolean get() = Modifier.isFinal(this.modifiers)
+
     private fun<T: Any> Field.get(target: Any, type: Class<T>): T {
-        return if (this.type.isPrimitive || this.type == String::class.java) {
-            return this.get(target) as T
-        } else {
-            if (!ReflectionProxy::class.java.isAssignableFrom(type)) {
-                throw Exception("Unable to cast non-primitive: ${this.type.canonicalName} to ${type.canonicalName}")
-            }
+        return if (ReflectionProxy::class.java.isAssignableFrom(type)) {
             type.getConstructor(Any::class.java).newInstance(this.get(target))
+        } else {
+            this.get(target) as T
         }
     }
 }

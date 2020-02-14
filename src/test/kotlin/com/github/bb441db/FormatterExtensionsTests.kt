@@ -2,13 +2,11 @@ package com.github.bb441db
 
 import org.junit.Test
 
-class PrintfParserTests {
-
-    private val parser = PrintfParser()
+class FormatterExtensionsTests {
 
     @Test
     fun testParse() {
-        val formatStrings = parser.parse("Test %1\$-3s %2\$d")
+        val formatStrings = FormatterExtensions.parsef("Test %1\$-3s %2\$d")
         assert(formatStrings.size == 4)
 
         assert(formatStrings[0] is FixedString) // Test<space>

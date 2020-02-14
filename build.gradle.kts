@@ -4,10 +4,10 @@ plugins {
 }
 
 object Settings {
-    const val ARTIFACT_ID = "printf-parser"
+    const val ARTIFACT_ID = "parsef"
     const val GROUP_ID = "com.github.bb441db"
     const val VERSION = "1.0"
-    const val REPOSITORY_NAME = "PrintfParser"
+    const val REPOSITORY_NAME = "Parsef"
     const val REPOSITORY_OWNER = "bb441db"
 }
 
